@@ -5,7 +5,6 @@ def load_dataset(filename, path, **args):
     dataset = []
     with open(filename,"r") as file:
         for line in file:
-            print(line)
             imgFile, x, y = line.split(" ")
             img = misc.imread(os.path.join(path, imgFile), **args)
             dataset.append([img, (int(x), int(y))])
