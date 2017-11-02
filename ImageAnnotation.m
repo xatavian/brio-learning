@@ -14,16 +14,17 @@
 % specified otherwise by user.
 
 table = table; %name of table
-N = size(table,2);
+N = size(table,1);
 
-fileID = fopen('tableofballpos1.txt','w');
+fileID = fopen('tableofballpos2.txt','w');
 for i = 1 : N
    
     x = round(table.ball(i,1) + table.ball(i,3)/2);
     y = round(table.ball(i,2) + table.ball(i,4)/2);
     
-    name = table.imageFilename{i};
+    [filepath,name,ext] = fileparts(table.imageFilename{i});
     fprintf(fileID, name);
+    fprintf(fileID,ext);
     fprintf(fileID, ' %2d %2d\n',x,y);
     
 end
