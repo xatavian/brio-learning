@@ -15,14 +15,17 @@
 
 table = table; %name of table
 N = size(table,1);
+relativePath = "whole/white/fromNorthWest/";
+fileID = fopen('whole_white_fromNorthWest.txt','w');
 
-fileID = fopen('tableofballpos2.txt','w');
 for i = 1 : N
    
-    x = round(table.ball(i,1) + table.ball(i,3)/2);
-    y = round(table.ball(i,2) + table.ball(i,4)/2);
+    xball = table(i,2).ball{1};
+    x = round(xball(1) + xball(3)/2);
+    y = round(xball(2) + xball(4)/2);
     
     [filepath,name,ext] = fileparts(table.imageFilename{i});
+    fprintf(fileID, relativePath);
     fprintf(fileID, name);
     fprintf(fileID,ext);
     fprintf(fileID, ' %2d %2d\n',x,y);
