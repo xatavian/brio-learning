@@ -15,8 +15,10 @@
 
 table = table; %name of table
 N = size(table,1);
+
 relativePath = "whole/white/fromNorthWest/";
 fileID = fopen('whole_white_fromNorthWest.txt','w');
+
 
 for i = 1 : N
    
