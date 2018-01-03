@@ -49,13 +49,12 @@ def load_dataset(filename, path, windows=False, verbose=False, preprocess=None, 
 
     return np.array(raws), np.array(imgs), np.array(coords)
 
-def load_data_list(path, fileList, windows=False, verbose=False, preprocess=None, **args):
+def load_data_list(path, fileList, windows=False, verbose=False, **args):
     """
     Reads a data folder and loads the images.
     If needed, the images can be preprocessed before being saved.
     """
-    raws, imgs, coords = [], [], []
-    
+    imgs_raw, coords_raw= [], []
     
     for datasetFile in fileList:
 
@@ -68,18 +67,13 @@ def load_data_list(path, fileList, windows=False, verbose=False, preprocess=None
                 if windows: imgFile.replace('/',"\\")
                 if verbose: print("Loading ", imgFile)
 
-                img = image.load_img(os.path.join(path, imgFile), **args)
-                img = image.img_to_array(img)
-                #img = np.expand_dims(img, axis=0)
-                raw = misc.imread(os.path.join(path, imgFile))
-                if preprocess:
-                    img = preprocess(img.copy())
-
-                imgs.append(img)
-                raws.append(raw)
-                coords.append((int(x), int(y)) )
-
-    return np.array(raws), np.array(imgs), np.array(coords)
+                raw = image.load_img(os.path.join(path, imgFile), **args)
+                raw = image.img_to_array(raw)
+                imgs_raw.append(raw)
+                coords_raw.append((int(x), int(y)))
+    
+    
+    return np.array(imgs_raw), np.array(coords_raw)
 
 
 
@@ -119,20 +113,18 @@ def visLayer(aImg, aModel, layerNo, filterNo):
     
     fig = plt.figure()
     
-    ax = fig.add_subplot(111, title = aModel.layers[layerNo].name)
+    ax = fig.add_subplot(111, title = aModel.layers[layerNo].name + ' filter:' + str(filterNo))
     ax.imshow(img[0,:,:,filterNo], cmap='gray')
     
     return fig, ax
 
 def selectiveWeights(model_base, layer, filters, filtersPrev):
 
-    weights = model.layers[layer].get_weights()[0][:,:,:,filters][:,:,filtersPrev,:]
-    biases = model.layers[layer].get_weights()[1][filters]
+    weights = model_base.layers[layer].get_weights()[0][:,:,:,filters][:,:,filtersPrev,:]
+    biases = model_base.layers[layer].get_weights()[1][filters]
     newWeights = [weights, biases]
 
     return newWeights
-
-
 
 
 

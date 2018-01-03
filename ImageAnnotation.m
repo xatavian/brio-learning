@@ -1,3 +1,8 @@
+% Brio Learning, Image Annotation script
+% Last modification: 03/01/2018
+% This script was used in order to extract 
+% the images' annotation to a CSV file
+
 %% Read image data and write to file
 
 % Recipe for labeling images
